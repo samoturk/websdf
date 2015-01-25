@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
- <!-- Intro Header -->
+
 <div>
     <div class="container">
         <div class="row text-center">
@@ -9,20 +9,25 @@
             <p class="intro-text">A free, open source Sdf viewer.<br>Created by <a href='https://github.com/samoturk'>Samo Turk</a>.</p>
             
             
-            <form class="form-group center-block" action="/sdf" method="post" enctype="multipart/form-data">
+            <form class="form-group center-block" action="/sdf" method="post" enctype="multipart/form-data" id="uploadform">
             {% csrf_token %}
+                <span class="btn btn-link btn-file">
                 {{form}}
+                </span>
                 <p class="help-block">Example block-level help text here.</p>
                     
-            <button class="button" type="submit" value="sdf" name="sdf">
+            <button class="btn btn-link" type="submit" value="sdf" name="sdf">
             <span class="fa-stack fa-lg animated">
                 <i class="fa fa-circle-thin fa-stack-2x"></i>
                 <i class="fa fa-upload animated fa-stack-1x"></i>
             </span>
             </button>
+            
             </form>
             </div>
         </div>
     </div>
+    
+    
 </div>
 {% endblock %}
