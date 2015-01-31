@@ -16,6 +16,14 @@ def upload_file(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             df = read_sdf(request.FILES['file'])
-            return render(request, 'table.html', {'test':df.to_html()})
+            cols = list(df.columns)
+            
+            rows = []
+            for ix, row in df.iterrows():
+            #for cell in row:
+            #    print cell
+                rows.append(list(row))
+            print rows
+            return render(request, 'table.html', {'rows':rows, 'cols':cols})
         
 
