@@ -13,20 +13,20 @@ $("#table").tablesorter();
 <div class="container">
 
 <div class="row text-center">
-    <div class="col-md-8 col-md-offset-2">
-        <h3 class="brand-heading"><strong>WebSdf</strong></h3>
+    <div>
+        <h3 class="brand-heading"><a href="/"><i class="fa fa-home"></i></a> <strong>WebSdf</strong></h3>
     </div>
 </div>
     <div class="row text-center">
 
-    
+<br>
 <div class="table-responsive">
-  <table class="table table-hover table-condensed" id="table">
+  <table class="table table-hover table-condensed table-bordered" id="table">
         <thead>
                 
         <tr>
         {% for colid in cols %}
-        <th class="col-sm-1">{{colid}} <i class="fa fa-sort"></i></th>
+        <th>{{colid}} <i class="fa fa-sort"></i></th>
          {% endfor %}
         </tr>
         

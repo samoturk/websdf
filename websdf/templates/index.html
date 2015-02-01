@@ -5,8 +5,17 @@
     <div class="container">
         <div class="row text-center">
             <div class="col-md-8 col-md-offset-2">
-            <h1 class="brand-heading"><strong>WebSdf</strong></h1>
-            <p class="intro-text">A free, open source Sdf viewer.<br>Created by <a href='https://github.com/samoturk'>Samo Turk</a>.</p>
+            {% if error %}
+            <div class="alert alert-dismissable alert-warning">
+            {{error}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <i class="fa fa-times"></i>
+            </button>
+            </div>
+            {% endif %}
+            
+            <h1><strong>WebSdf</strong></h1>
+            <p>A free, open source Sdf viewer.<br>Created by <a href='https://github.com/samoturk'>Samo Turk</a>.</p>
             
             
             <form class="form-group center-block" action="/sdf" method="post" enctype="multipart/form-data" id="uploadform">
@@ -14,14 +23,45 @@
                 <span class="btn btn-link btn-file">
                 {{form}}
                 </span>
-                <p class="help-block">Example block-level help text here.</p>
-                    
-            <button class="btn btn-link" type="submit" value="sdf" name="sdf">
-            <span class="fa-stack fa-lg animated">
-                <i class="fa fa-circle-thin fa-stack-2x"></i>
-                <i class="fa fa-upload animated fa-stack-1x"></i>
-            </span>
-            </button>
+                <p class="help-block">Select a SDF file.</p>
+                
+                <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#options" aria-expanded="false" aria-controls="options">
+                Options
+                </button>
+                <br>
+                <div class="collapse" id="options">
+                <br>
+                <div class="well">
+                <p class="help-block">Descriptors</p>
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default btn-xs">
+                        <input type="checkbox" autocomplete="off" name="checks" value="MW"> MW
+                    </label>
+                    <label class="btn btn-default btn-xs">
+                        <input type="checkbox" autocomplete="off" name="checks" value="logP"> logP
+                    </label>
+                    <label class="btn btn-default btn-xs">
+                        <input type="checkbox" autocomplete="off" name="checks" value="HB"> HBA&HBD
+                    </label>
+                    <label class="btn btn-default btn-xs">
+                        <input type="checkbox" autocomplete="off" name="checks" value="logS"> clogSw
+                    </label>
+                </div>
+                <br>
+                <p class="help-block">Smiles</p>
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default btn-xs">
+                        <input type="checkbox" autocomplete="off" name="checks" value="SMILES"> Show SMILES
+                    </label>
+                </div>
+                
+                </div>
+                </div>    
+                
+                <br>
+                <button class="btn btn-primary btn-lg" type="submit" value="sdf" name="sdf">
+                    <i class="fa fa-upload"></i> Upload
+                </button>
             
             </form>
             </div>
