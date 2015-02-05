@@ -26,6 +26,10 @@ def _clogSw(mol):
 
 def read_sdf(sdf, checks):
     df = PandasTools.LoadSDF(sdf)
+    # Create a # column
+    df['#'] = range(len(df))
+    # Put # column on first position
+    df = df[['#'] + [x for x in list(df.columns) if x != '#']]
     
     # For compatibility with RDKit older than 2015_03
     if 'SMILES' in list(df.columns):

@@ -29,7 +29,7 @@ def upload_file(request):
             # Extract DataFrame rows
             rows = []
             for ix, row in df.iterrows():
-                rows.append(list(row))
+                rows.append(zip(cols,list(row)))
             print checks
             #print rows
             return render(request, 'table.html', {'rows':rows, 'cols':cols})

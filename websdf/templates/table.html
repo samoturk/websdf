@@ -26,7 +26,7 @@ $("#table").tablesorter();
                 
         <tr>
         {% for colid in cols %}
-        <th>{{colid}} <i class="fa fa-sort"></i></th>
+        <th class='{{colid}}'>{{colid}} <i class="fa fa-sort"></i></th>
          {% endfor %}
         </tr>
         
@@ -35,8 +35,8 @@ $("#table").tablesorter();
         {% for row in rows %}
         
         <tr>
-        {% for cell in row %}
-        <td>{{cell|safe}}</td>
+        {% for cellID, cell in row %}
+        <td class='{{cellID}}'>{{cell|safe}}</td>
         {% endfor %}
         </tr>
         
