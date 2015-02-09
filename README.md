@@ -6,7 +6,7 @@ Django and RDKit based interactive web SDF viewer
 - [ ] Select recalculate 3D coordinates
 - [x] Select calculate descriptors (MW, logP, HBA, HBD, HAC, clogSw)
 - [ ] Select&add 3D view (ChemDoodle)
-- [ ] Show/hide columns
+- [x] Show/hide columns
 - [ ] Show/hide rows
 - [ ] 404.html
 - [ ] round numerical fields to 2 decimals 
@@ -14,3 +14,4 @@ Django and RDKit based interactive web SDF viewer
 - [ ] Define image/canvas size
 - [x] Add license
 - [ ] Document deployment
+- [ ] Generate class names in python

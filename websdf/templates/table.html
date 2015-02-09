@@ -8,6 +8,15 @@ $(document).ready(function()
 $("#table").tablesorter();
 }
 );
+
+{% for colid in cols %}
+{% if colid != "#" %}
+function toggle{{colid}}() {
+    $('.{{colid}}').toggle(); 
+    };
+{% endif %}
+{% endfor %}
+
 </script>
 
 <div class="container">
@@ -18,6 +27,11 @@ $("#table").tablesorter();
     </div>
 </div>
     <div class="row text-center">
+    {% for colid in cols %}
+    {% if colid != "#" %}
+    <button class="btn btn-primary btn-xs" onclick="javascript:toggle{{colid}}()" data-dismiss="modal" aria-hidden="true" id='hidecpd'><i class="fa fa-toggle-on"></i> {{colid}}</button>
+    {% endif %}
+    {% endfor %}
 
 <br>
 <div class="table-responsive">
