@@ -1,5 +1,4 @@
 from django.shortcuts import render, render_to_response, redirect
-from .forms import UploadFileForm
 from .calculations import read_sdf
 
 import pandas as pd
@@ -9,17 +8,16 @@ def home(request):
     Define home page view. It is loaded by urls.py.
     '''
     if 'error' in request.GET:
-        return render(request, 'index.html', {'form':UploadFileForm, 'error':request.GET['error']})
+        return render(request, 'index.html', {'error':request.GET['error']})
     else:
-        return render(request, 'index.html', {'form':UploadFileForm})
+        return render(request, 'index.html')
 
 def upload_file(request):
     '''
     View that returns web page with table with SDF contents
     '''
     if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid() and str(request.FILES['file']).endswith('.sdf'):
+        if str(request.FILES['file']).endswith('.sdf'):
             checks = request.POST.getlist('checks')
             df = read_sdf(request.FILES['file'], checks)
                 
