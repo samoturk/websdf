@@ -13,6 +13,7 @@ $("#table").tablesorter();
 {% if colid != "#" %}
 function toggle{{colid}}() {
     $('.{{colid}}').toggle(); 
+    $('#{{colid}}').toggleClass('active');
     };
 {% endif %}
 {% endfor %}
@@ -25,14 +26,14 @@ function toggle{{colid}}() {
     <div>
         <h3 class="brand-heading"><a href="/"><i class="fa fa-home"></i></a> <strong>WebSdf</strong></h3>
     </div>
-</div>
+
     <div class="row text-center">
     {% for colid in cols %}
-    {% if colid != "#" %}
-    <button class="btn btn-primary btn-xs" onclick="javascript:toggle{{colid}}()" data-dismiss="modal" aria-hidden="true" id='hidecpd'><i class="fa fa-toggle-on"></i> {{colid}}</button>
-    {% endif %}
+        {% if colid != "#" %}
+        <button class="btn btn-default btn-xs" id="{{colid}}" onclick="javascript:toggle{{colid}}()" data-dismiss="modal" aria-hidden="true" id='hidecpd'>{{colid}}</button>
+        {% endif %}
     {% endfor %}
-
+    </div>
 <br>
 <div class="table-responsive">
   <table class="table table-hover table-condensed table-bordered" id="table">
@@ -49,8 +50,8 @@ function toggle{{colid}}() {
         {% for row in rows %}
         
         <tr>
-        {% for cellID, cell in row %}
-        <td class='{{cellID}}'>{{cell|safe}}</td>
+        {% for colid, cell in row %}
+        <td class='{{colid}}'>{{cell|safe}}</td>
         {% endfor %}
         </tr>
         
