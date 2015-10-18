@@ -1,8 +1,16 @@
 from rdkit import Chem
 from rdkit.Chem import Descriptors
 from rdkit.Chem import PandasTools
+from rdkit.Chem import FilterCatalog
 import pandas as pd
 
+params = FilterCatalog.FilterCatalogParams()
+params.AddCatalog(FilterCatalog.FilterCatalogParams.FilterCatalogs.PAINS_A)
+params.AddCatalog(FilterCatalog.FilterCatalogParams.FilterCatalogs.PAINS_B)
+params.AddCatalog(FilterCatalog.FilterCatalogParams.FilterCatalogs.PAINS_C)
+catalog = FilterCatalog.FilterCatalog(params)
+
+PandasTools.molSize = (180,180)
 
 def _clogSw(mol):
     '''
@@ -24,6 +32,13 @@ def _clogSw(mol):
                     +0.01580559 * RotBonds \
                     -0.35483585 * AromProp
     return clogSw_value
+
+def _detect_pains(mol):
+    matches = catalog.GetMatches(mol)
+    if matches:
+        return ', '.join([x.GetDescription() for x in matches])
+    else:
+        return ''
 
 def _calculate_descs(df, checks):
     # Create a # column
@@ -49,6 +64,9 @@ def _calculate_descs(df, checks):
     # Calculate solubility    
     if 'logS' in checks:
         df['clogSw'] = df['ROMol'].map(_clogSw).round(decimals=2)
+    # Detect PAINS
+    if 'PAINS' in checks:
+        df['PAINS'] = df['ROMol'].map(_detect_pains)
     return df
 
 def read_sdf(sdf, checks):
