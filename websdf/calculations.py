@@ -4,6 +4,12 @@ from rdkit.Chem import PandasTools
 from rdkit.Chem import FilterCatalog
 import pandas as pd
 
+try:
+    # Import extra, proprietary functions
+    from websdf.extra import extra
+except:
+    extra = None
+
 params = FilterCatalog.FilterCatalogParams()
 params.AddCatalog(FilterCatalog.FilterCatalogParams.FilterCatalogs.PAINS_A)
 params.AddCatalog(FilterCatalog.FilterCatalogParams.FilterCatalogs.PAINS_B)
@@ -67,6 +73,9 @@ def _calculate_descs(df, checks):
     # Detect PAINS
     if 'PAINS' in checks:
         df['PAINS'] = df['ROMol'].map(_detect_pains)
+    if 'extra' in checks:
+        if extra:
+            df = extra(df)
     return df
 
 def read_sdf(sdf, checks):

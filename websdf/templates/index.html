@@ -20,7 +20,7 @@
             {% endif %}
             
             <h1><strong>WebSdf</strong></h1>
-            <p>A free, open source Sdf/Smi viewer.<br>Created by <a href='https://github.com/samoturk'>Samo Turk</a>.</p>
+            <p>Sdf/Smi viewer with descriptor calculation and PAINS prediction.<br>Created by <a href='https://github.com/samoturk'>Samo Turk</a>.</p>
             
             
             <form class="form-group center-block" action="/sdf" method="post" enctype="multipart/form-data" id="uploadform">
@@ -57,6 +57,9 @@
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-default btn-xs">
                         <input type="checkbox" autocomplete="off" name="checks" value="PAINS"> Detect PAINS
+                    </label>
+                    <label class="btn btn-default btn-xs">
+                        <input type="checkbox" autocomplete="off" name="checks" value="extra"> Extra models
                     </label>
                 </div>
                 <br>

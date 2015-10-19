@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .calculations import read_sdf, read_smi
+from websdf.calculations import read_sdf, read_smi
 
 def home(request):
     '''
@@ -18,38 +18,30 @@ def upload_file(request):
         if str(request.FILES['file']).endswith('.sdf'):
             checks = request.POST.getlist('checks')
             df = read_sdf(request.FILES['file'], checks)
-                
             # Get table columns
             cols = list(df.columns)
-            
-            # Extract DataFrame rows
+           # Extract DataFrame rows
             rows = []
             for ix, row in df.iterrows():
                 rows.append(zip(cols,list(row)))
-            #print checks
-            #print rows
             return render(request, 'table.html', {'rows':rows, 'cols':cols})
+            
         elif (str(request.FILES['file']).endswith('.smi') or str(request.FILES[
             'file']).endswith('.ism')):
             checks = request.POST.getlist('checks')            
-            df = read_smi(request.FILES['file'], checks)
-                
+            df = read_smi(request.FILES['file'], checks)            
             # Get table columns
             cols = list(df.columns)
-            
             # Extract DataFrame rows
             rows = []
             for ix, row in df.iterrows():
                 rows.append(zip(cols,list(row)))
-            #print checks
-            #print rows
             return render(request, 'table.html', {'rows':rows, 'cols':cols})
-            
         else:
             error = 'Please select a valid SDF/SMI file'
         
     else:
-        error = 'Please select a valid SDF file'
+        error = 'Please select a valid SDF/SMI file'
     return redirect('/?error=%s' %error)
         
 
