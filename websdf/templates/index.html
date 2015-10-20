@@ -23,7 +23,7 @@
             <p>Sdf/Smi viewer with descriptor calculation and PAINS prediction.<br>Created by <a href='https://github.com/samoturk'>Samo Turk</a>.</p>
             
             
-            <form class="form-group center-block" action="/sdf" method="post" enctype="multipart/form-data" id="uploadform">
+            <form class="form-group center-block" action="{{PAGE_URL}}/sdf" method="post" enctype="multipart/form-data" id="uploadform">
             {% csrf_token %}
                 <div class="row">
                 <input type="file" class="filestyle" name="file" required="True">

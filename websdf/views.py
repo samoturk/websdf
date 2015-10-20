@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
 from websdf.calculations import read_sdf, read_smi
+from websdf.settings import PAGE_URL
 
 def home(request):
     '''
     Define home page view. It is loaded by urls.py.
     '''
     if 'error' in request.GET:
-        return render(request, 'index.html', {'error':request.GET['error']})
+        return render(request, 'index.html', {'PAGE_URL':PAGE_URL, 
+                                              'error':request.GET['error']})
     else:
-        return render(request, 'index.html')
+        return render(request, 'index.html', {'PAGE_URL':PAGE_URL})
 
 def upload_file(request):
     '''
@@ -24,7 +26,8 @@ def upload_file(request):
             rows = []
             for ix, row in df.iterrows():
                 rows.append(zip(cols,list(row)))
-            return render(request, 'table.html', {'rows':rows, 'cols':cols})
+            return render(request, 'table.html', {'PAGE_URL':PAGE_URL,
+                                                  'rows':rows, 'cols':cols})
             
         elif (str(request.FILES['file']).endswith('.smi') or str(request.FILES[
             'file']).endswith('.ism')):
@@ -36,12 +39,13 @@ def upload_file(request):
             rows = []
             for ix, row in df.iterrows():
                 rows.append(zip(cols,list(row)))
-            return render(request, 'table.html', {'rows':rows, 'cols':cols})
+            return render(request, 'table.html', {'PAGE_URL':PAGE_URL,
+                                                  'rows':rows, 'cols':cols})
         else:
             error = 'Please select a valid SDF/SMI file'
         
     else:
         error = 'Please select a valid SDF/SMI file'
-    return redirect('/?error=%s' %error)
+    return redirect(PAGE_URL + '/?error=%s' %error)
         
 
