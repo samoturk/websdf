@@ -73,6 +73,11 @@ def _calculate_descs(df, checks):
     # Detect PAINS
     if 'PAINS' in checks:
         df['PAINS'] = df['ROMol'].map(_detect_pains)
+    if 'recalc2d' in checks:
+        for x in df['ROMol']:
+            x.Compute2DCoords()
+    if 'removess' in checks:
+        PandasTools.RemoveSaltsFromFrame(df)
     if 'extra' in checks:
         if extra:
             df = extra(df)
