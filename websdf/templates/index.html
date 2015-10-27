@@ -20,7 +20,14 @@
             {% endif %}
             
             <h1><strong>WebSdf</strong></h1>
-            <p>Sdf/Smi viewer with descriptor calculation and PAINS prediction.<br>Created by <a href='https://github.com/samoturk'>Samo Turk</a>.</p>
+            <p>Sdf/Smi viewer with descriptor calculation and PAINS prediction.
+            <ul>
+                <li><mark>Sdf</mark> support is the most reliable</li>  
+                <li>If file ends with <mark>.smi</mark>, <mark>.ism</mark> or <mark>.txt</mark> SMILES format is assumed</li>
+                <li>SMILES generated with OpenBabel works reliably</li>
+                <li>Sdf and smiles format support multiple molecules per file</li>
+            </ul>          
+            <br>Created by <a href='https://github.com/samoturk'>Samo Turk</a>.</p>
             
             
             <form class="form-group center-block" action="{{PAGE_URL}}/sdf" method="post" enctype="multipart/form-data" id="uploadform">

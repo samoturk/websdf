@@ -17,7 +17,8 @@ def upload_file(request):
     View that returns web page with table with SDF contents
     '''
     if request.method == 'POST':
-        if str(request.FILES['file']).endswith('.sdf'):
+        filename = str(request.FILES['file'])
+        if filename.endswith('.sdf'):
             checks = request.POST.getlist('checks')
             df = read_sdf(request.FILES['file'], checks)
             # Get table columns
@@ -29,8 +30,8 @@ def upload_file(request):
             return render(request, 'table.html', {'PAGE_URL':PAGE_URL,
                                                   'rows':rows, 'cols':cols})
             
-        elif (str(request.FILES['file']).endswith('.smi') or str(request.FILES[
-            'file']).endswith('.ism')):
+        elif (filename.endswith('.smi') or filename.endswith('.ism') or 
+            filename.endswith('txt')):
             checks = request.POST.getlist('checks')            
             df = read_smi(request.FILES['file'], checks)            
             # Get table columns
