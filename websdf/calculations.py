@@ -93,4 +93,15 @@ def read_smi(smi, checks):
     PandasTools.AddMoleculeColumnToFrame(df, smilesCol='SMILES')
     df = _calculate_descs(df,checks)
     return df
-    
+
+def read_mol(molfile, checks):
+    mol = Chem.MolFromMolBlock(molfile.read())
+    df = pd.DataFrame([mol], columns=['ROMol'])
+    df = _calculate_descs(df,checks)
+    return df
+
+def read_mol2(molfile, checks):
+    mol = Chem.MolFromMol2Block(molfile.read())
+    df = pd.DataFrame([mol], columns=['ROMol'])
+    df = _calculate_descs(df,checks)
+    return df

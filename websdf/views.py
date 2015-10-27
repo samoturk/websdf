@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from websdf.calculations import read_sdf, read_smi
+from websdf.calculations import read_sdf, read_smi, read_mol, read_mol2
 from websdf.settings import PAGE_URL
 
 def home(request):
@@ -18,7 +18,7 @@ def upload_file(request):
     '''
     if request.method == 'POST':
         filename = str(request.FILES['file'])
-        if filename.endswith('.sdf'):
+        if filename.lower().endswith('.sdf'):
             checks = request.POST.getlist('checks')
             df = read_sdf(request.FILES['file'], checks)
             # Get table columns
@@ -30,10 +30,33 @@ def upload_file(request):
             return render(request, 'table.html', {'PAGE_URL':PAGE_URL,
                                                   'rows':rows, 'cols':cols})
             
-        elif (filename.endswith('.smi') or filename.endswith('.ism') or 
-            filename.endswith('txt')):
+        elif (filename.lower().endswith('.smi') or 
+                filename.lower().endswith('.ism') or 
+                filename.lower().endswith('txt')):
             checks = request.POST.getlist('checks')            
             df = read_smi(request.FILES['file'], checks)            
+            # Get table columns
+            cols = list(df.columns)
+            # Extract DataFrame rows
+            rows = []
+            for ix, row in df.iterrows():
+                rows.append(zip(cols,list(row)))
+            return render(request, 'table.html', {'PAGE_URL':PAGE_URL,
+                                                  'rows':rows, 'cols':cols})
+        elif (filename.lower().endswith('.mol')):
+            checks = request.POST.getlist('checks')            
+            df = read_mol(request.FILES['file'], checks)            
+            # Get table columns
+            cols = list(df.columns)
+            # Extract DataFrame rows
+            rows = []
+            for ix, row in df.iterrows():
+                rows.append(zip(cols,list(row)))
+            return render(request, 'table.html', {'PAGE_URL':PAGE_URL,
+                                                  'rows':rows, 'cols':cols})
+        elif (filename.lower().endswith('.mol2')):
+            checks = request.POST.getlist('checks')            
+            df = read_mol2(request.FILES['file'], checks)            
             # Get table columns
             cols = list(df.columns)
             # Extract DataFrame rows
