@@ -12,10 +12,10 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-PAGE_URL = r'http://192.168.96.104/websdf'
-APP_NAME = PAGE_URL.split('/')[-1] + r'/'
-#PAGE_URL = ''
-#APP_NAME = ''
+#PAGE_URL = r'http://192.168.96.104/websdf'
+#APP_NAME = PAGE_URL.split('/')[-1] + r'/'
+PAGE_URL = ''
+APP_NAME = ''
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/

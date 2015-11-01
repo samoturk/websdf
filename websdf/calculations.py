@@ -78,6 +78,8 @@ def _calculate_descs(df, checks):
             x.Compute2DCoords()
     if 'removess' in checks:
         PandasTools.RemoveSaltsFromFrame(df)
+    if 'svg' in checks:
+        PandasTools.molRepresentation = 'svg'
     if 'extra' in checks:
         if extra:
             df = extra(df)
