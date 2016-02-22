@@ -12,10 +12,10 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-#PAGE_URL = r'http://192.168.96.104/websdf'
-#APP_NAME = PAGE_URL.split('/')[-1] + r'/'
-PAGE_URL = ''
-APP_NAME = ''
+PAGE_URL = r'http://192.168.96.104/websdf'
+APP_NAME = PAGE_URL.split('/')[-1] + r'/'
+#PAGE_URL = ''
+#APP_NAME = ''
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.auth'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -64,6 +65,29 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-TEMPLATE_DIRS = (
-os.path.join(os.path.dirname(__file__), "templates"),
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(os.path.dirname(__file__), "templates")# insert your TEMPLATE_DIRS here
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+#TEMPLATE_DIRS = (
+#os.path.join(os.path.dirname(__file__), "templates"),
+#)
