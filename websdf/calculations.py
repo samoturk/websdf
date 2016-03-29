@@ -52,8 +52,9 @@ def _calculate_descs(df, checks):
     # Put # column on first position
     df = df[['#'] + [x for x in list(df.columns) if x != '#']]    
     # For compatibility with RDKit older than 2015_03
-    if 'SMILES' in list(df.columns):
-        df = df.drop(['SMILES'], axis=1)
+    # I think we can keep smiles column, since user can easily hide it from web interface
+    #if 'SMILES' in list(df.columns):
+    #    df = df.drop(['SMILES'], axis=1)
     # Recalculate SMILES
     if 'SMILES' in checks:
         df['SMILES'] = df.apply(lambda x: Chem.MolToSmiles(x['ROMol']), axis=1)
@@ -69,7 +70,7 @@ def _calculate_descs(df, checks):
         df['HBD'] = df['ROMol'].map(Descriptors.NumHDonors)
     # Calculate solubility    
     if 'logS' in checks:
-        df['clogSw'] = df['ROMol'].map(_clogSw).round(decimals=2)
+        df['logS'] = df['ROMol'].map(_clogSw).round(decimals=2)
     # Detect PAINS
     if 'PAINS' in checks:
         df['PAINS'] = df['ROMol'].map(_detect_pains)
@@ -86,24 +87,34 @@ def _calculate_descs(df, checks):
     return df
 
 def read_sdf(sdf, checks):
+    """Reads sdf file and loads it in data frame"""
     df = PandasTools.LoadSDF(sdf)
     df = _calculate_descs(df,checks)
     return df
 
 def read_smi(smi, checks):
+    """Reads smi file and loads it in data frame, works best with open babel format"""
     df = pd.read_csv(smi, delimiter="\t", names=['SMILES', 'ID'])
     PandasTools.AddMoleculeColumnToFrame(df, smilesCol='SMILES')
     df = _calculate_descs(df,checks)
     return df
 
 def read_mol(molfile, checks):
+    """Reads mol file and loads it in data frame"""
     mol = Chem.MolFromMolBlock(molfile.read())
     df = pd.DataFrame([mol], columns=['ROMol'])
     df = _calculate_descs(df,checks)
     return df
 
 def read_mol2(molfile, checks):
+    """Reads mol2 file and loads it in data frame"""
     mol = Chem.MolFromMol2Block(molfile.read())
     df = pd.DataFrame([mol], columns=['ROMol'])
+    df = _calculate_descs(df,checks)
+    return df
+
+def read_smi_string(smi, checks):
+    df = pd.DataFrame({'SMILES':smi, 'ID':0}, index=[0])
+    PandasTools.AddMoleculeColumnToFrame(df, smilesCol='SMILES')
     df = _calculate_descs(df,checks)
     return df

@@ -1,11 +1,18 @@
 from django.shortcuts import render, redirect
-from websdf.calculations import read_sdf, read_smi, read_mol, read_mol2
+from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponseBadRequest
+from websdf.calculations import read_sdf, read_smi, read_mol, read_mol2, read_smi_string
 from websdf.settings import PAGE_URL
-
+from rdkit.Chem import MolFromSmiles
+try:
+    # Import extra, proprietary functions
+    from websdf.extra import extra
+except:
+    extra = None
+    
 def home(request):
-    '''
+    """
     Define home page view. It is loaded by urls.py.
-    '''
+    """
     if 'error' in request.GET:
         return render(request, 'index.html', {'PAGE_URL':PAGE_URL, 
                                               'error':request.GET['error']})
@@ -13,9 +20,9 @@ def home(request):
         return render(request, 'index.html', {'PAGE_URL':PAGE_URL})
 
 def upload_file(request):
-    '''
+    """
     View that returns web page with table with SDF contents
-    '''
+    """
     if request.method == 'POST':
         filename = str(request.FILES['file'])
         if filename.lower().endswith('.sdf'):
@@ -72,4 +79,30 @@ def upload_file(request):
         error = 'Please select a valid SDF/SMI file'
     return redirect(PAGE_URL + '/?error=%s' %error)
         
-
+def api(request):
+    """
+    View that serves the API. SMILES have to be percent encoded
+    """
+    if request.method == 'GET':
+        calcs = []        
+        if 'calculations' in request.GET:
+            if len(request.GET['calculations']) == 0:
+                return JsonResponse({'calculations':['MW', 'logP', 'HBA', 'HBD', 
+                                    'logS', 'PAINS']})
+            elif 'smiles' in request.GET:
+                calcs = request.GET['calculations'].split(',')
+                if 'everything' in calcs:
+                    calcs = ['MW', 'logP', 'HBA', 'HBD', 'logS', 'PAINS']
+        if 'models' in request.GET and extra:
+            if len(request.GET['models']) == 0:
+                return JsonResponse(extra([], info=True))
+            else:
+                calcs.append('extra')
+        
+        if 'smiles' in request.GET and MolFromSmiles(request.GET['smiles']) is not None:
+            df = read_smi_string(request.GET['smiles'], calcs)
+            return JsonResponse(df.drop(['ROMol', '#'], axis=1).iloc[0].to_dict())     
+        else:
+            return HttpResponseBadRequest('Molecule could not be constructed from SMILES')
+    else:
+        return HttpResponseNotAllowed('Only GET')
